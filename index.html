@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Particle simulator</title>
+</head>
+
+<body>
+  <canvas id="canv"></canvas>
+
+  <script>
+    'use strict';
+
+    let particles = [];
+    const k = 10;
+    const canvas = document.getElementById('canv');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 1000;
+    canvas.height = 600;
+    canvas.onmousedown = (e) => {
+      particles.push(new Particle(e.x, e.y, 1));
+      console.log(particles[1].x);
+    }
+
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = 'white';
+
+
+    window.onload = () => {
+      setInterval(Tick, 20);
+    }
+
+    const Tick = () => {
+      particles.forEach(element => {
+        element.move();
+        element.draw();
+      });
+    }
+
+    function Particle(posX, posY, mass) {
+      this.x = posX;
+      this.y = posY;
+      this.m = mass;
+      this.vx = 0;
+      this.vy = 0;
+      this.draw = () => {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.m, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+      }
+      this.move = () => {
+        for (let i = 0; i < particles.length; i++) {
+          // console.log(particles.indexOf(this));
+          if (i !== particles.indexOf(this)) {
+            let d = Math.pow(particles[i].x - this.x, 2) + Math.pow(particles[i].y - this.y, 2);
+            if (d > 1) {
+              this.vx += (k * (particles[i].x - this.x) * particles[i].m) / d;
+              this.vy += (k * (particles[i].y - this.y) * particles[i].m) / d;
+            }
+          }
+        }
+        this.x += this.vx;
+        this.y += this.vy;
+      }
+    }
+  </script>
+</body>
+
+</html>
