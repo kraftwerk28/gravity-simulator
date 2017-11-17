@@ -40,6 +40,12 @@
         gravitone.y = -100;
       }
     }
+    canvas.onmousemove = (e) => {
+      if (gravitate) {
+        gravitone.x = e.x;
+        gravitone.y = e.y;
+      }
+    }
 
     const w = canvas.width;
     const h = canvas.height;
