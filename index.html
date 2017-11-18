@@ -9,6 +9,10 @@
 
 <body>
   <canvas id="canv"></canvas>
+  <input type="checkbox" onchange="showG = this.checked">Show G-fields
+  <br>
+  <input type="checkbox" onchange="showCl = this.checked">Show colour
+  <br>
 
   <script>
     'use strict';
@@ -19,10 +23,12 @@
     let particles = [];
     const k = 10;
     let gravitate = false;
+    let showG = false;
+    let showCl = false;
     const canvas = document.getElementById('canv');
     const ctx = canvas.getContext('2d');
     const halo = document.getElementById('halo');
-    canvas.width = window.innerWidth - 15;
+    canvas.width = window.innerWidth - 25;
     canvas.height = window.innerHeight - 25;
     canvas.onmousedown = (e) => {
       if (e.button === 0)
@@ -46,6 +52,7 @@
         gravitone.y = e.y;
       }
     }
+    // canvas.ontouch
 
     const w = canvas.width;
     const h = canvas.height;
@@ -61,6 +68,8 @@
     }
 
     const Tick = () => {
+      // ctx.fillStyle = 'black';
+      // ctx.fillRect(0, 0, w, h);
       particles.forEach(element => {
         element.move();
         element.draw();
@@ -77,10 +86,24 @@
       this.vx = 0;
       this.vy = 0;
       this.draw = () => {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.m, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.closePath();
+        if (showCl) {
+          ctx.fillStyle = rgb(255 - (this.vx + this.vy) * 25, 128, (this.vx + this.vy) * 25);
+          ctx.strokeStyle = rgb(255 - (this.vx + this.vy) * 25, 128, (this.vx + this.vy) * 25);
+        }
+        else {
+          ctx.fillStyle = 'white';
+          ctx.strokeStyle = 'white';
+        }
+        if (showG) {
+          ctx.lineTo(this.x, this.y);
+          ctx.stroke();
+        }
+        else {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.m, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.closePath();
+        }
       }
       this.move = () => {
         for (let i = 0; i < particles.length; i++) {
@@ -110,6 +133,12 @@
           }
         }
       }
+    }
+    const map = (x, begin1, end1, begin2, end2) => {
+      return ((x - begin1) / (end1 - begin1)) * (end2 - begin2) + begin2;
+    }
+    const rgb = (R, G, B) => {
+      return 'rgb(' + Math.round(Math.abs(R)) + ', ' + Math.round(Math.abs(G)) + ', ' + Math.round(Math.abs(B)) + ')';
     }
   </script>
 </body>
