@@ -1,7 +1,5 @@
 'use strict';
-document.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-}, false);
+document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 let particles = [];
 const k = 10;
@@ -11,7 +9,7 @@ let showCl = false;
 const maxClVal = 10;
 
 let isTouch = false;
-const maxTouch = 500;
+const maxTouch = 2000;
 
 const canvas = document.getElementById('canv');
 const ctx = canvas.getContext('2d');
@@ -56,6 +54,12 @@ canvas.ontouchstart = (e) => {
 }
 canvas.ontouchend = (e) => {
   isTouch = false;
+}
+canvas.ontouchmove = (e) => {
+  if (isTouch) {
+    gravitone.x = e.x;
+    gravitone.t = e.y;
+  }
 }
 
 const w = canvas.width;
