@@ -1,5 +1,5 @@
 'use strict';
-document.addEventListener("contextmenu", function (e) {
+document.addEventListener("contextmenu", (e) => {
   e.preventDefault();
 }, false);
 
@@ -9,9 +9,13 @@ let gravitate = false;
 let showG = false;
 let showCl = false;
 const maxClVal = 10;
+
+let isTouch = false;
+const maxTouch = 500;
+
 const canvas = document.getElementById('canv');
 const ctx = canvas.getContext('2d');
-const halo = document.getElementById('halo');
+// const halo = document.getElementById('halo');
 canvas.width = window.innerWidth - 25;
 canvas.height = window.innerHeight - 25;
 canvas.onmousedown = (e) => {
@@ -36,7 +40,23 @@ canvas.onmousemove = (e) => {
     gravitone.y = e.y;
   }
 }
-// canvas.ontouch
+canvas.ontouchstart = (e) => {
+  isTouch = true;
+  setTimeout(() => {
+    if (isTouch) {
+      gravitone.x = e.x;
+      gravitone.y = e.y;
+      gravitate = true;
+    } else {
+      gravitate = false;
+      gravitone.x = -100;
+      gravitone.y = -100;
+    }
+  }, maxTouch);
+}
+canvas.ontouchend = (e) => {
+  isTouch = false;
+}
 
 const w = canvas.width;
 const h = canvas.height;
