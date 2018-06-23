@@ -5,28 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#000000" />
   <title>Gravity</title>
-  <style>
-    canvas {
-      background-color: black;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      left: 0px;
-    }
-
-  </style>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/kraftwerk28/bubble-web/master/style.css">
+  <link rel="stylesheet" href="canvas.css">
 
 </head>
 
 <body>
-  <canvas id="canv" style="overflow-y: hidden"></canvas>
-  <input type="checkbox" onchange="showG = this.checked">Show G-fields
-  <br>
-  <input type="checkbox" onchange="showCl = this.checked">Show colour
-  <br>
+  <label class="checkbox" id="color">Color</label>
+  <canvas id="gravity-simulator"></canvas>
 
   <script src="engine.js"></script>
+  <script src="https://rawgit.com/kraftwerk28/bubble-web/master/bubble.js"></script>
 </body>
 
 </html>

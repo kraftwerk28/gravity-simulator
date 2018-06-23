@@ -1,0 +1,10 @@
+#gravity-simulator {
+  background-color: black;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  overflow-y: hidden;
+  z-index: -1;
+}

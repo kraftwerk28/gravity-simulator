@@ -11,11 +11,15 @@ const maxClVal = 10;
 let isTouch = false;
 const maxTouch = 2000;
 
-const canvas = document.getElementById('canv');
+const canvas = document.getElementById('gravity-simulator');
+const color = document.getElementById('color');
 const ctx = canvas.getContext('2d');
 // const halo = document.getElementById('halo');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+color.onchange = () => {
+  showCl = color.checked;
+};
 canvas.onmousedown = (e) => {
   if (e.button === 0)
     particles.push(new Particle(e.x, e.y, 1));
