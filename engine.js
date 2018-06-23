@@ -2,7 +2,7 @@
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 let particles = [];
-const k = 10;
+const k = 0.1;
 let gravitate = false;
 let showG = false;
 let showCl = false;
@@ -14,8 +14,8 @@ const maxTouch = 2000;
 const canvas = document.getElementById('canv');
 const ctx = canvas.getContext('2d');
 // const halo = document.getElementById('halo');
-canvas.width = window.innerWidth - 25;
-canvas.height = window.innerHeight - 25;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 canvas.onmousedown = (e) => {
   if (e.button === 0)
     particles.push(new Particle(e.x, e.y, 1));
@@ -24,20 +24,20 @@ canvas.onmousedown = (e) => {
     gravitone.y = e.y;
     gravitate = true;
   }
-}
+};
 canvas.onmouseup = (e) => {
   if (e.button === 2) {
     gravitate = false;
     gravitone.x = -100;
     gravitone.y = -100;
   }
-}
+};
 canvas.onmousemove = (e) => {
   if (gravitate) {
     gravitone.x = e.x;
     gravitone.y = e.y;
   }
-}
+};
 canvas.ontouchstart = (e) => {
   isTouch = true;
   setTimeout(() => {
@@ -51,16 +51,16 @@ canvas.ontouchstart = (e) => {
       gravitone.y = -100;
     }
   }, maxTouch);
-}
+};
 canvas.ontouchend = (e) => {
   isTouch = false;
-}
+};
 canvas.ontouchmove = (e) => {
   if (isTouch) {
     gravitone.x = e.x;
     gravitone.t = e.y;
   }
-}
+};
 
 const w = canvas.width;
 const h = canvas.height;
@@ -71,21 +71,27 @@ ctx.fillStyle = 'white';
 
 
 window.onload = () => {
-  alert('use left click to create a particle\nuse a right click to simulate a black hole');
+  // alert('use left click to create a particle\nuse a right click to simulate a black hole');
   setInterval(Tick, 20);
 }
 
 const Tick = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   // ctx.fillStyle = 'black';
   // ctx.fillRect(0, 0, w, h);
-  particles.forEach(element => {
+  particles.forEach((element, i) => {
+    if (element.x < 0 || element.x > canvas.width ||
+      element.y < 0 || element.y > canvas.height) {
+      particles.splice(i, 1);
+      return;
+    }
     element.move();
     element.draw();
     if (gravitate) {
       gravitone.attract();
     }
   });
-}
+};
 
 function Particle(posX, posY, mass) {
   this.x = posX;
@@ -93,10 +99,12 @@ function Particle(posX, posY, mass) {
   this.m = mass;
   this.vx = 0;
   this.vy = 0;
+  this.trail = [];
+  this.trailLength = 10;
   this.draw = () => {
     if (showCl) {
       let val = map(Math.sqrt(Math.pow(this.vx, 2) + Math.pow(this.vy, 2)), 0, maxClVal, 0, 255);
-      let cl = rgb(val > 127 ? 0 : 2 * (127 - val), val < 127 ? val : 255 - val, val < 127 ? 0 : 2 * (val - 127));
+      let cl = rgb(val > 127 ? 0 : 2 * (127 - val), 127, val < 127 ? 0 : 2 * (val - 127));
       ctx.fillStyle = cl;
       ctx.strokeStyle = cl;
     }
@@ -109,31 +117,37 @@ function Particle(posX, posY, mass) {
       ctx.stroke();
     }
     else {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.m, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.closePath();
+      this.trail.forEach((p, i) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, i, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+      });
     }
   }
   this.move = () => {
     for (let i = 0; i < particles.length; i++) {
       // console.log(particles.indexOf(this));
       if (i !== particles.indexOf(this)) {
-        let d = Math.pow(particles[i].x - this.x, 2) + Math.pow(particles[i].y - this.y, 2);
+        let d = Math.sqrt(Math.pow(particles[i].x - this.x, 2) + Math.pow(particles[i].y - this.y, 2));
         if (d > 1) {
           this.vx += (k * (particles[i].x - this.x) * particles[i].m) / d;
           this.vy += (k * (particles[i].y - this.y) * particles[i].m) / d;
         }
       }
     }
+    this.trail.push({ x: this.x, y: this.y });
+    while (this.trail.length > this.trailLength) {
+      this.trail.shift();
+    }
     this.x += this.vx;
     this.y += this.vy;
   }
-}
+};
 const gravitone = {
   x: 0,
   y: 0,
-  m: 5,
+  m: 500,
   attract: () => {
     for (let i = 0; i < particles.length; i++) {
       let d = Math.pow(particles[i].x - gravitone.x, 2) + Math.pow(particles[i].y - gravitone.y, 2);
@@ -143,10 +157,10 @@ const gravitone = {
       }
     }
   }
-}
+};
 const map = (x, begin1, end1, begin2, end2) => { // begin1, end1 - input values; begin2, end2 - output
   return ((x - begin1) / (end1 - begin1)) * (end2 - begin2) + begin2;
-}
+};
 const rgb = (R, G, B) => {
   return 'rgb(' + Math.round(Math.abs(R)) + ', ' + Math.round(Math.abs(G)) + ', ' + Math.round(Math.abs(B)) + ')';
-}
+};

@@ -2,9 +2,21 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Particle simulator</title>
+  <style>
+    canvas {
+      background-color: black;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+    }
+
+  </style>
+
 </head>
 
 <body>
@@ -14,7 +26,7 @@
   <input type="checkbox" onchange="showCl = this.checked">Show colour
   <br>
 
-  <script src="scratch.js"></script>
+  <script src="engine.js"></script>
 </body>
 
 </html>
