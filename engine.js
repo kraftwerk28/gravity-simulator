@@ -13,20 +13,12 @@ const maxTouch = 2000;
 
 const canvas = document.getElementById('gravity-simulator');
 const color = document.getElementById('color');
-const fullscreen = document.getElementById('fullscreen');
 const ctx = canvas.getContext('2d');
 // const halo = document.getElementById('halo');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 color.onchange = () => {
   showCl = color.checked;
-};
-fullscreen.onchange = () => {
-  if (fullscreen.checked) {
-    document.body.webkitRequestFullScreen();
-  } else {
-    document.webkitExitFullscreen();
-  }
 };
 canvas.onmousedown = (e) => {
   if (e.button === 0)
