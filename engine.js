@@ -11,21 +11,17 @@ let isTouch = false;
 const maxTouch = 1000;
 
 const canvas = document.getElementById('gravity-simulator');
-const color = document.getElementById('color');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-color.onchange = () => {
-  showCl = color.checked;
-};
 canvas.onmousedown = (e) => {
   if (e.button === 0)
     particles.push(new Particle(e.x, e.y, 1));
-  else if (e.button === 2) {
-    gravitone.x = e.x;
-    gravitone.y = e.y;
-    gravitate = true;
-  }
+  // else if (e.button === 2) {
+  //   gravitone.x = e.x;
+  //   gravitone.y = e.y;
+  //   gravitate = true;
+  // }
 };
 canvas.onmouseup = (e) => {
   if (e.button === 2) {
@@ -40,31 +36,31 @@ canvas.onmousemove = (e) => {
     gravitone.y = e.y;
   }
 };
-canvas.ontouchstart = (e) => {
-  isTouch = true;
-  setTimeout(() => {
-    if (isTouch) {
-      gravitone.x = e.touches[0].clientX;
-      gravitone.y = e.touches[0].clientY;
-      gravitate = true;
-    } else {
-      isTouch = gravitate = false;
-      // gravitone.x = -100;
-      // gravitone.y = -100;
-    }
-  }, maxTouch);
-};
-canvas.ontouchend = () => {
-  isTouch = gravitate = false;
-};
-canvas.ontouchmove = (e) => {
-  if (isTouch && gravitate) {
-    gravitone.x = e.changedTouches[0].clientX;
-    gravitone.y = e.changedTouches[0].clientY;
-  }
-};
+// canvas.ontouchstart = (e) => {
+//   isTouch = true;
+//   setTimeout(() => {
+//     if (isTouch) {
+//       gravitone.x = e.touches[0].clientX;
+//       gravitone.y = e.touches[0].clientY;
+//       gravitate = true;
+//     } else {
+//       isTouch = gravitate = false;
+//       // gravitone.x = -100;
+//       // gravitone.y = -100;
+//     }
+//   }, maxTouch);
+// };
+// canvas.ontouchend = () => {
+//   isTouch = gravitate = false;
+// };
+// canvas.ontouchmove = (e) => {
+//   if (isTouch && gravitate) {
+//     gravitone.x = e.changedTouches[0].clientX;
+//     gravitone.y = e.changedTouches[0].clientY;
+//   }
+// };
 
-canvas.oncontextmenu = () => false;
+// canvas.oncontextmenu = () => false;
 
 const w = canvas.width;
 const h = canvas.height;
