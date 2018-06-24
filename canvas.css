@@ -1,10 +1,11 @@
 #gravity-simulator {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.1);
   position: absolute;
   top: 0px;
   right: 0px;
   bottom: 0px;
   left: 0px;
   overflow-y: hidden;
-  z-index: -1;
+  user-select: none;
+  -webkit-user-select: none;
 }

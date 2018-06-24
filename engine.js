@@ -1,5 +1,4 @@
 'use strict';
-document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 let particles = [];
 const k = 0.1;
@@ -9,12 +8,11 @@ let showCl = false;
 const maxClVal = 10;
 
 let isTouch = false;
-const maxTouch = 2000;
+const maxTouch = 1000;
 
 const canvas = document.getElementById('gravity-simulator');
 const color = document.getElementById('color');
 const ctx = canvas.getContext('2d');
-// const halo = document.getElementById('halo');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 color.onchange = () => {
@@ -46,25 +44,27 @@ canvas.ontouchstart = (e) => {
   isTouch = true;
   setTimeout(() => {
     if (isTouch) {
-      gravitone.x = e.x;
-      gravitone.y = e.y;
+      gravitone.x = e.touches[0].clientX;
+      gravitone.y = e.touches[0].clientY;
       gravitate = true;
     } else {
-      gravitate = false;
-      gravitone.x = -100;
-      gravitone.y = -100;
+      isTouch = gravitate = false;
+      // gravitone.x = -100;
+      // gravitone.y = -100;
     }
   }, maxTouch);
 };
-canvas.ontouchend = (e) => {
-  isTouch = false;
+canvas.ontouchend = () => {
+  isTouch = gravitate = false;
 };
 canvas.ontouchmove = (e) => {
-  if (isTouch) {
-    gravitone.x = e.x;
-    gravitone.t = e.y;
+  if (isTouch && gravitate) {
+    gravitone.x = e.changedTouches[0].clientX;
+    gravitone.y = e.changedTouches[0].clientY;
   }
 };
+
+canvas.oncontextmenu = () => false;
 
 const w = canvas.width;
 const h = canvas.height;
