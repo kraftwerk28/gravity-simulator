@@ -54,7 +54,10 @@ canvas.ontouchstart = (e) => {
     }
   }, maxTouch);
 };
-canvas.ontouchend = () => {
+canvas.ontouchend = (e) => {
+  if (!gravitate) {
+    particles.push(new Particle(e.changedTouches[0].clientX, e.changedTouches[0].clientY, 1));
+  }
   isTouch = gravitate = false;
 };
 canvas.ontouchmove = (e) => {
