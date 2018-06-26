@@ -93,7 +93,7 @@ const Tick = () => {
     }
   });
   if (generateParticles && Math.random() < 0.1) {
-    let x = y = 0;
+    let x = 0, y = 0;
     const s = Math.random() > 0.5;
     if (s) {
       x = Math.random() * canvas.width;
