@@ -6,6 +6,7 @@ let gravitate = false;
 let showG = false;
 let showCl = false;
 const maxClVal = 10;
+let generateParticles = false;
 
 let isTouch = false;
 const maxTouch = 1000;
@@ -80,8 +81,8 @@ const Tick = () => {
   // ctx.fillStyle = 'black';
   // ctx.fillRect(0, 0, w, h);
   particles.forEach((element, i) => {
-    if (element.x < 0 || element.x > canvas.width ||
-      element.y < 0 || element.y > canvas.height) {
+    if (element.x < -50 || element.x > canvas.width + 50 ||
+      element.y < -50 || element.y > canvas.height + 50) {
       particles.splice(i, 1);
       return;
     }
@@ -91,6 +92,20 @@ const Tick = () => {
       gravitone.attract();
     }
   });
+  if (generateParticles && Math.random() < 0.1) {
+    let x = y = 0;
+    const s = Math.random() > 0.5;
+    if (s) {
+      x = Math.random() * canvas.width;
+      y = Math.random() > 0.5 ? -25 : canvas.height + 25;
+    } else {
+      y = Math.random() * canvas.height;
+      x = Math.random() > 0.5 ? -25 : canvas.width + 25;
+    }
+    const p = new Particle(x, y, 1);
+    p.vx = Math.random() * 2 - 1;
+    p.vy = Math.random() * 2 - 1;
+  }
 };
 
 function Particle(posX, posY, mass) {
@@ -164,3 +179,4 @@ const map = (x, begin1, end1, begin2, end2) => { // begin1, end1 - input values;
 const rgb = (R, G, B) => {
   return 'rgb(' + Math.round(Math.abs(R)) + ', ' + Math.round(Math.abs(G)) + ', ' + Math.round(Math.abs(B)) + ')';
 };
+
