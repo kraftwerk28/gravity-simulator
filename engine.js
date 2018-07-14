@@ -12,35 +12,37 @@ const maxTouch = 1000;
 
 const canvas = document.getElementById('gravity-simulator');
 const color = document.getElementById('color');
+const counter = document.getElementById('counter');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-color.onchange = () => {
+color.addEventListener('change', () => {
   showCl = color.checked;
-};
-canvas.onmousedown = (e) => {
+});
+canvas.addEventListener('mousedown', (e) => {
   if (e.button === 0)
-    particles.push(new Particle(e.x, e.y, 1));
+    summon(e.clientX, e.clientY);
   else if (e.button === 2) {
     gravitone.x = e.x;
     gravitone.y = e.y;
     gravitate = true;
   }
-};
-canvas.onmouseup = (e) => {
+});
+canvas.addEventListener('mouseup', (e) => {
   if (e.button === 2) {
     gravitate = false;
     gravitone.x = -100;
     gravitone.y = -100;
   }
-};
-canvas.onmousemove = (e) => {
+});
+canvas.addEventListener('mousemove', (e) => {
   if (gravitate) {
     gravitone.x = e.x;
     gravitone.y = e.y;
   }
-};
-canvas.ontouchstart = (e) => {
+});
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
   isTouch = true;
   setTimeout(() => {
     if (isTouch) {
@@ -49,23 +51,23 @@ canvas.ontouchstart = (e) => {
       gravitate = true;
     } else {
       isTouch = gravitate = false;
-      // gravitone.x = -100;
-      // gravitone.y = -100;
     }
   }, maxTouch);
-};
-canvas.ontouchend = (e) => {
+});
+canvas.addEventListener('touchend', (e) => {
+  e.preventDefault();
   if (!gravitate) {
-    particles.push(new Particle(e.changedTouches[0].clientX, e.changedTouches[0].clientY, 1));
+    summon(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
   }
   isTouch = gravitate = false;
-};
-canvas.ontouchmove = (e) => {
+});
+
+canvas.addEventListener('touchmove', (e) => {
   if (isTouch && gravitate) {
     gravitone.x = e.changedTouches[0].clientX;
     gravitone.y = e.changedTouches[0].clientY;
   }
-};
+});
 
 canvas.oncontextmenu = () => false;
 
@@ -77,10 +79,11 @@ ctx.fillRect(0, 0, w, h);
 ctx.fillStyle = 'white';
 
 
-window.onload = () => {
+window.addEventListener('load', () => {
   // alert('use left click to create a particle\nuse a right click to simulate a black hole');
   setInterval(Tick, 20);
-}
+  counter.textContent = '0';
+});
 
 const Tick = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -90,6 +93,7 @@ const Tick = () => {
     if (element.x < 0 || element.x > canvas.width ||
       element.y < 0 || element.y > canvas.height) {
       particles.splice(i, 1);
+      counter.textContent = particles.length.toString();
       return;
     }
     element.move();
@@ -99,7 +103,10 @@ const Tick = () => {
     }
   });
 };
-
+const summon = (x, y) => {
+  particles.push(new Particle(x, y, 1));
+  counter.textContent = particles.length.toString();
+};
 function Particle(posX, posY, mass) {
   this.x = posX;
   this.y = posY;

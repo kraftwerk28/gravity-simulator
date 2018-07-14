@@ -4,17 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
   <meta name="theme-color" content="#000000" />
-  <title>Gravity</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
   <link rel="stylesheet" href="https://rawgit.com/kraftwerk28/bubble-web/master/style.css">
   <link rel="stylesheet" href="canvas.css">
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/google/material-design-icons/master/image/2x_web/ic_adjust_black_48dp.png"
     type="image/png">
+  <style>
+    #counter {
+      float: right;
+      color: white;
+      font-family: 'Roboto Mono', monospace;
+      font-size: large;
+      margin: 5px;
+      margin-top: 15px;
+    }
 
+  </style>
+  <title>Gravity</title>
 </head>
 
 <body>
   <canvas id="gravity-simulator"></canvas>
   <label class="checkbox" id="color">Color</label>
+  <div id="counter"></div>
 
   <script src="engine.js"></script>
   <script src="https://rawgit.com/kraftwerk28/bubble-web/master/bubble.js"></script>
